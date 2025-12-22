@@ -1,0 +1,130 @@
+---
+title: "Replacing Manual Form State with Type-Safe Abstractions"
+date: "2025-12-22"
+---
+
+## The Challenge
+
+Dispel's legacy forms were blocking team velocity. What started as simple forms had evolved into unwieldy 800+ line components that engineers actively avoided:
+
+- Manual state management with useReducer for every field change
+- PropTypes instead of TypeScript—runtime errors everywhere
+- Validation logic scattered across components
+- Repetitive dispatch patterns for every form interaction
+- Engineers copying existing forms and hoping they didn't break something
+- Every new form required 2-3 days of careful development
+
+Form development had become a specialized skill that bottlenecked on senior engineers. We needed a system where any engineer could build forms confidently and quickly.
+
+## The Solution
+
+I established Dispel's form architecture using React Hook Form, Zod, and TypeScript, creating a library of 20+ specialized components with consistent patterns. The goal wasn't just cleaner code—it was to democratize form development so any engineer could ship forms without deep expertise in our legacy patterns.
+
+## From Manual State Management to Declarative Forms
+
+The transformation was dramatic. Here's what changed:
+
+### Before: 800+ Lines of Manual State
+
+```javascript
+// Manual state management for everything
+const [data, dispatch] = useReducer((state, action) => {
+  const newData = { ...state };
+  for (const [key, value] of Object.entries(action)) {
+    newData[key] = value;
+  }
+  return newData;
+}, { name: '', url: '', error: false });
+
+// Manual validation for every field
+const handleURLChange = (value) => {
+  const validationResult = validateURL(value, t);
+  if (!validationResult.isValid) {
+    dispatch({ error: true, url: value });
+  } else {
+    dispatch({ error: false, url: value });
+  }
+};
+
+// Manual rendering with PropTypes
+<InputText
+  value={data.name}
+  onChange={(value) => dispatch({ name: value })}
+  disabled={!isAdmin}
+/>
+// ... repeat 800+ more lines
+```
+
+### After: Declarative, Type-Safe Components
+
+```javascript
+// Automatic validation with Zod + TypeScript
+const formSchema = z.object({
+  name: z.string().min(1),
+  url: z.string().url(),
+});
+
+const form = useForm<z.infer<typeof formSchema>>({
+  resolver: zodResolver(formSchema)
+});
+
+// Clean, composable form
+<Form form={form} onSubmit={handleSubmit}>
+  <FormInput name="name" label="Item Name" indicateRequired />
+  <FormInput name="url" label="URL" indicateRequired />
+  <FormButtons>
+    <FormSubmit value="Create Item" />
+    <FormReset />
+  </FormButtons>
+</Form>
+```
+
+## Building a Component Library
+
+### 20+ Specialized Components
+
+I established a complete form component library that handles every pattern the team needed:
+
+- **Basic inputs:** FormInput, FormTextarea, FormNumber, FormPassword
+- **Selection:** FormSelect, FormCombobox, FormCheckbox, FormRadioGroup
+- **Complex patterns:** FormMoney, FormSubnets, FormSwitches
+- **Date/time:** FormDate, FormDateTime
+- **Smart features:** AutoSaveForm with debounced submissions
+
+### Team Impact
+
+- **Democratized form development:** Junior engineers shipping complex forms on their first week
+- **10x velocity improvement:** Forms that took 2-3 days now ship in 2-3 hours
+- **Eliminated bottlenecks:** Forms no longer require senior engineer involvement
+- **Consistent UX everywhere:** Error messages, loading states, and validation patterns unified
+
+### Business Outcomes
+
+- **Reduced production bugs:** Runtime validation catches errors before they reach users
+- **Faster feature delivery:** Team shipped 18 new forms in Q4 vs 6 in Q3
+- **Improved maintainability:** Updates to form behavior propagate automatically to all forms
+- **Better user experience:** Consistent validation and error handling across the platform
+
+## Technical Architecture
+
+- **React Hook Form** for automatic state management and validation
+- **Zod** for runtime validation with automatic TypeScript type inference
+- **TypeScript generics** for flexible, type-safe component APIs
+- **Composable architecture** with consistent props across all components
+- **i18n integration** for automatic error message translation
+- **Design system integration** for consistent styling
+
+## Adoption & Rollout
+
+Rather than mandating immediate adoption, I focused on making the new system so compelling that engineers would choose it:
+
+- **Started with high-pain forms:** Migrated the most complex legacy forms to prove the pattern
+- **Created comprehensive documentation:** Engineers could reference examples for every component
+- **Made forms a teaching tool:** Used code reviews to demonstrate patterns, not enforce rules
+- **Tracked adoption metrics:** Measured velocity improvements to demonstrate value to leadership
+
+## Impact
+
+This transformation fundamentally changed how we build forms at Dispel. By establishing clear patterns and comprehensive components, I removed form development as a specialized skill and made it accessible to the entire team.
+
+The best validation? A junior engineer shipped a complex multi-step form with conditional validation on their third day—something that previously would have required a senior engineer and multiple days of work. The abstractions I established scaled beyond me, which is exactly what technical leadership should do.

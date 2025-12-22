@@ -8,7 +8,7 @@
                     <time class="text-xs text-zinc-400" datetime="2025-12-01">Dec 1, 25</time>
                 </li>
                 <li class="flex justify-between">
-                    <a class="text-sm text-zinc-300" href="#">Building a Resilient Data Layer</a>
+                    <a class="text-sm text-zinc-300" href="/blog/building-a-resilient-data-layer">Building a Resilient Data Layer</a>
                     <time class="text-xs text-zinc-400" datetime="2025-11-26">Nov 26, 25</time>
                 </li>
                 <li class="flex justify-between">
