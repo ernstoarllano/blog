@@ -1,5 +1,5 @@
 <script>
-	import Readme from '../../components/readme.svelte';
+	import Readme from '$lib/components/readme.svelte';
 </script>
 
 <Readme />

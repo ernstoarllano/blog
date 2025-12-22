@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Article from '../../../components/article.svelte';
+	import Article from '$lib/components/article.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
