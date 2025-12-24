@@ -3,38 +3,17 @@ title: "Architecting a Multi-Variant API Integration System"
 date: "2025-12-22"
 ---
 
-## The Challenge
+<script>
+	import CodeBlock from '$lib/components/code-block.svelte';
 
-Dispel needed to integrate with a third-party platform that had multiple API versions. The initial approach—building separate implementations for each variant—was creating unsustainable technical debt:
-
-- Duplicate authentication logic across Guardian and Vantage APIs
-- Separate job implementations for each API variant
-- Copy-pasted error handling scattered across files
-- Inconsistent database patterns—each integration did things differently
-- Adding new API variants required 2-3 days of careful duplication
-- Bug fixes had to be applied to multiple codebases
-
-The team needed a system where adding new API variants was predictable, fast, and didn't require deep knowledge of our existing integrations.
-
-## The Solution
-
-I architected a unified integration system using base classes, factory patterns, and shared abstractions. The goal wasn't just reducing duplication—it was establishing a framework where any engineer could add new API variants confidently, following clear patterns rather than reverse-engineering existing code.
-
-## From Duplicate Implementations to Shared Abstractions
-
-The transformation was dramatic. Here's what changed:
-
-### Before: Copy-Paste for Every Variant
-
-```javascript
-// Completely separate implementations
+	const beforeCode = `// Completely separate implementations
 class GuardianApi {
   private connection = null;
   private proxyUri = undefined;
 
   async connect(apiUrl, apiKeyName, apiKeyToken) {
     // Guardian-specific auth
-    const response = await fetch(`${apiUrl}/v1/auth`, {
+    const response = await fetch(\`\${apiUrl}/v1/auth\`, {
       method: 'POST',
       body: JSON.stringify({ key_name: apiKeyName })
     });
@@ -48,20 +27,16 @@ class VantageApi {
 
   async connect(apiUrl, apiKeyName, apiKeyToken) {
     // Vantage-specific auth (copy-pasted with tweaks)
-    const response = await fetch(`${apiUrl}/v2/auth`, {
+    const response = await fetch(\`\${apiUrl}/v2/auth\`, {
       method: 'POST',
       body: JSON.stringify({ key_name: apiKeyName })
     });
     // Vantage-specific response handling
   }
 }
-// ... 500+ more lines duplicated per API
-```
+// ... 500+ more lines duplicated per API`;
 
-### After: Base Class + Specific Implementations
-
-```javascript
-// Base class handles all shared logic
+	const afterCode = `// Base class handles all shared logic
 export abstract class BaseApi {
   protected connection: Connection | null = null;
   protected proxyUri: URL | undefined;
@@ -80,7 +55,7 @@ export abstract class BaseApi {
 // API-specific classes only implement differences
 export class GuardianApi extends BaseApi {
   async connect(apiUrl, apiKeyName, apiKeyToken) {
-    const response = await fetch(`${apiUrl}/v1/auth`, {
+    const response = await fetch(\`\${apiUrl}/v1/auth\`, {
       dispatcher: this.getProxyAgent() // Inherited
     });
     this.connection = await response.json();
@@ -90,21 +65,15 @@ export class GuardianApi extends BaseApi {
 
 export class VantageApi extends BaseApi {
   async connect(apiUrl, apiKeyName, apiKeyToken) {
-    const response = await fetch(`${apiUrl}/v2/auth`, {
+    const response = await fetch(\`\${apiUrl}/v2/auth\`, {
       dispatcher: this.getProxyAgent() // Same proxy logic
     });
     this.connection = { token: response.headers.get('Authorization') };
     return this;
   }
-}
-```
+}`;
 
-## Factory Pattern for Job Creation
-
-Rather than duplicating job logic, I established factory functions that generate jobs with consistent error handling and monitoring:
-
-```javascript
-// Factory creates jobs for any API type
+	const factoryCode = `// Factory creates jobs for any API type
 function createInitializeJob(
   jobName: string,
   apiType: ApiType,
@@ -137,8 +106,65 @@ export const InitializeVantageJob = createInitializeJob(
   'InitializeVantage',
   'vantage',
   getVantageState
-);
-```
+);`;
+
+	const routeCode = `// Single route for all API types
+router.post(
+  '/:clientId/:apiType/initialize',
+  param('apiType').isIn(['guardian', 'vantage']),
+  async (req, res) => {
+    const { apiType } = req.params;
+
+    const integration = await insertIntegration({
+      client_id: req.params.clientId,
+      status: 'UNINITIALIZED',
+    });
+
+    // Dispatch the right job based on API type
+    const job = apiType === 'guardian'
+      ? InitializeGuardianJob
+      : InitializeVantageJob;
+
+    await job.dispatch({ clientId: integration.client_id });
+    res.json(integration);
+  }
+);`;
+</script>
+
+## The Challenge
+
+Dispel needed to integrate with a third-party platform that had multiple API versions. The initial approach—building separate implementations for each variant—was creating unsustainable technical debt:
+
+- Duplicate authentication logic across Guardian and Vantage APIs
+- Separate job implementations for each API variant
+- Copy-pasted error handling scattered across files
+- Inconsistent database patterns—each integration did things differently
+- Adding new API variants required 2-3 days of careful duplication
+- Bug fixes had to be applied to multiple codebases
+
+The team needed a system where adding new API variants was predictable, fast, and didn't require deep knowledge of our existing integrations.
+
+## The Solution
+
+I architected a unified integration system using base classes, factory patterns, and shared abstractions. The goal wasn't just reducing duplication—it was establishing a framework where any engineer could add new API variants confidently, following clear patterns rather than reverse-engineering existing code.
+
+## From Duplicate Implementations to Shared Abstractions
+
+The transformation was dramatic. Here's what changed:
+
+### Before: Copy-Paste for Every Variant
+
+<CodeBlock code={beforeCode} />
+
+### After: Base Class + Specific Implementations
+
+<CodeBlock code={afterCode} />
+
+## Factory Pattern for Job Creation
+
+Rather than duplicating job logic, I established factory functions that generate jobs with consistent error handling and monitoring:
+
+<CodeBlock code={factoryCode} />
 
 ## Establishing Integration Patterns
 
@@ -164,29 +190,7 @@ By extracting shared logic into base classes and factory functions, I reduced th
 
 I established a single endpoint structure that handles all API variants through parameters, eliminating route duplication:
 
-```javascript
-// Single route for all API types
-router.post(
-  '/:clientId/:apiType/initialize',
-  param('apiType').isIn(['guardian', 'vantage']),
-  async (req, res) => {
-    const { apiType } = req.params;
-
-    const integration = await insertIntegration({
-      client_id: req.params.clientId,
-      status: 'UNINITIALIZED',
-    });
-
-    // Dispatch the right job based on API type
-    const job = apiType === 'guardian'
-      ? InitializeGuardianJob
-      : InitializeVantageJob;
-
-    await job.dispatch({ clientId: integration.client_id });
-    res.json(integration);
-  }
-);
-```
+<CodeBlock code={routeCode} />
 
 ## Technical Architecture
 

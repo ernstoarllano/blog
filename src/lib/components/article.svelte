@@ -8,15 +8,23 @@
     }
 
 	let { title, datetime, children }: Article = $props();
+
+	const formattedDate = $derived(
+		new Date(datetime).toLocaleDateString('en-US', {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric'
+		})
+	);
 </script>
 
 <div class="max-w-[500px] mx-auto pt-44 pb-16">
 	<article class="space-y-8">
 		<header>
-            <h1 class="text-2xl font-bold">
+            <h1>
                 {title}
             </h1>
-            <time datetime={datetime}>{new Date(datetime)}</time>
+            <time datetime={datetime}>{formattedDate}</time>
         </header>
         {@render children?.()}
     </article>

@@ -3,31 +3,10 @@ title: "Sunnyside: Building a TypeScript-First Component Library"
 date: "2025-12-22"
 ---
 
-## The Challenge
+<script>
+	import CodeBlock from '$lib/components/code-block.svelte';
 
-Dispel's legacy codebase was creating friction across the entire engineering team. Inconsistent patterns made every UI change feel like navigating a minefield:
-
-- PropTypes everywhere—no compile-time safety, just runtime surprises
-- Monolithic components mixing business logic with UI rendering
-- Manual CSS class management with zero consistency
-- Custom utility classes like "o-flex-acenter" that only veterans understood
-- Permission logic scattered across every component
-- UI development taking 3-4x longer than it should
-
-We needed to modernize, but a full rewrite wasn't an option. The solution had to work alongside legacy code while establishing clear patterns for the future.
-
-## The Solution
-
-I created Sunnyside, a TypeScript-first component library built on Radix UI primitives and Class Variance Authority. The goal wasn't just prettier components—it was to establish a design system that would accelerate UI development across the team while providing a clear migration path from legacy patterns.
-
-## From PropTypes Chaos to Type-Safe Components
-
-The transformation was dramatic. Here's what changed:
-
-### Before: Manual Everything
-
-```javascript
-// PropTypes, manual state, custom CSS classes
+	const beforeCode = `// PropTypes, manual state, custom CSS classes
 import PropTypes from 'prop-types';
 
 function AppBanner({ message, close }) {
@@ -52,13 +31,9 @@ function AppBanner({ message, close }) {
 
 AppBanner.propTypes = {
   close: PropTypes.func,
-};
-```
+};`;
 
-### After: Composable, Type-Safe Components
-
-```javascript
-// TypeScript, composable primitives, consistent styling
+	const afterCode = `// TypeScript, composable primitives, consistent styling
 import {
   Alert,
   AlertClose,
@@ -83,8 +58,37 @@ export function Alerts() {
       ))}
     </>
   );
-}
-```
+}`;
+</script>
+
+## The Challenge
+
+Dispel's legacy codebase was creating friction across the entire engineering team. Inconsistent patterns made every UI change feel like navigating a minefield:
+
+- PropTypes everywhere—no compile-time safety, just runtime surprises
+- Monolithic components mixing business logic with UI rendering
+- Manual CSS class management with zero consistency
+- Custom utility classes like "o-flex-acenter" that only veterans understood
+- Permission logic scattered across every component
+- UI development taking 3-4x longer than it should
+
+We needed to modernize, but a full rewrite wasn't an option. The solution had to work alongside legacy code while establishing clear patterns for the future.
+
+## The Solution
+
+I created Sunnyside, a TypeScript-first component library built on Radix UI primitives and Class Variance Authority. The goal wasn't just prettier components—it was to establish a design system that would accelerate UI development across the team while providing a clear migration path from legacy patterns.
+
+## From PropTypes Chaos to Type-Safe Components
+
+The transformation was dramatic. Here's what changed:
+
+### Before: Manual Everything
+
+<CodeBlock code={beforeCode} />
+
+### After: Composable, Type-Safe Components
+
+<CodeBlock code={afterCode} />
 
 ## Establishing Design System Foundations
 

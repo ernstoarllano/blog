@@ -3,31 +3,10 @@ title: "Replacing Manual Form State with Type-Safe Abstractions"
 date: "2025-12-22"
 ---
 
-## The Challenge
+<script>
+	import CodeBlock from '$lib/components/code-block.svelte';
 
-Dispel's legacy forms were blocking team velocity. What started as simple forms had evolved into unwieldy 800+ line components that engineers actively avoided:
-
-- Manual state management with useReducer for every field change
-- PropTypes instead of TypeScript—runtime errors everywhere
-- Validation logic scattered across components
-- Repetitive dispatch patterns for every form interaction
-- Engineers copying existing forms and hoping they didn't break something
-- Every new form required 2-3 days of careful development
-
-Form development had become a specialized skill that bottlenecked on senior engineers. We needed a system where any engineer could build forms confidently and quickly.
-
-## The Solution
-
-I established Dispel's form architecture using React Hook Form, Zod, and TypeScript, creating a library of 20+ specialized components with consistent patterns. The goal wasn't just cleaner code—it was to democratize form development so any engineer could ship forms without deep expertise in our legacy patterns.
-
-## From Manual State Management to Declarative Forms
-
-The transformation was dramatic. Here's what changed:
-
-### Before: 800+ Lines of Manual State
-
-```javascript
-// Manual state management for everything
+	const beforeCode = `// Manual state management for everything
 const [data, dispatch] = useReducer((state, action) => {
   const newData = { ...state };
   for (const [key, value] of Object.entries(action)) {
@@ -52,13 +31,9 @@ const handleURLChange = (value) => {
   onChange={(value) => dispatch({ name: value })}
   disabled={!isAdmin}
 />
-// ... repeat 800+ more lines
-```
+// ... repeat 800+ more lines`;
 
-### After: Declarative, Type-Safe Components
-
-```javascript
-// Automatic validation with Zod + TypeScript
+	const afterCode = `// Automatic validation with Zod + TypeScript
 const formSchema = z.object({
   name: z.string().min(1),
   url: z.string().url(),
@@ -76,8 +51,37 @@ const form = useForm<z.infer<typeof formSchema>>({
     <FormSubmit value="Create Item" />
     <FormReset />
   </FormButtons>
-</Form>
-```
+</Form>`;
+</script>
+
+## The Challenge
+
+Dispel's legacy forms were blocking team velocity. What started as simple forms had evolved into unwieldy 800+ line components that engineers actively avoided:
+
+- Manual state management with useReducer for every field change
+- PropTypes instead of TypeScript—runtime errors everywhere
+- Validation logic scattered across components
+- Repetitive dispatch patterns for every form interaction
+- Engineers copying existing forms and hoping they didn't break something
+- Every new form required 2-3 days of careful development
+
+Form development had become a specialized skill that bottlenecked on senior engineers. We needed a system where any engineer could build forms confidently and quickly.
+
+## The Solution
+
+I established Dispel's form architecture using React Hook Form, Zod, and TypeScript, creating a library of 20+ specialized components with consistent patterns. The goal wasn't just cleaner code—it was to democratize form development so any engineer could ship forms without deep expertise in our legacy patterns.
+
+## From Manual State Management to Declarative Forms
+
+The transformation was dramatic. Here's what changed:
+
+### Before: 800+ Lines of Manual State
+
+<CodeBlock code={beforeCode} />
+
+### After: Declarative, Type-Safe Components
+
+<CodeBlock code={afterCode} />
 
 ## Building a Component Library
 

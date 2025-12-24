@@ -5,6 +5,7 @@ date: "2025-12-22"
 
 <script>
 	import Mermaid from '$lib/components/mermaid.svelte';
+	import CodeBlock from '$lib/components/code-block.svelte';
 
 	const emailFlowDiagram = `graph TD
 A[Function Called] --> B[Define Email Template]
@@ -27,6 +28,35 @@ style I fill:#10b981,stroke:#059669
 style G fill:#f59e0b,stroke:#d97706
 style J fill:#f59e0b,stroke:#d97706
 style K fill:#059669,stroke:#047857,stroke-width:3px,color:#fff`;
+
+	const beforeCode = `// Manual text with switch statements per locale
+const template = ({ locale }) => {
+  switch (locale) {
+    case 'en-us':
+      return { text: 'Hello, {{user_name}}...' };
+    case 'de':
+      return { text: 'Hallo, {{user_name}}...' };
+    case 'fr':
+      return { text: 'Bonjour, {{user_name}}...' };
+    // ... 180+ lines repeated for every template
+  }
+};`;
+
+	const afterCode = `// Clean, composable, automatically internationalized
+import { Button, Heading, Text } from '@react-email/components';
+import { useTranslation } from 'react-i18next';
+
+export function ConfirmEmail({ userName, link }: Props) {
+  const { t } = useTranslation();
+
+  return (
+    <EmailBase>
+      <Heading>{t('confirm.heading')}</Heading>
+      <Text>{t('confirm.greeting', { userName })}</Text>
+      <Button href={link}>{t('confirm.button')}</Button>
+    </EmailBase>
+  );
+}`;
 </script>
 
 ## The Challenge
@@ -49,38 +79,9 @@ I architected and drove the migration to a modern email infrastructure built on 
 
 The transformation was dramatic. Here's what changed:
 
-```javascript
-// Manual text with switch statements per locale
-const template = ({ locale }) => {
-  switch (locale) {
-    case 'en-us':
-      return { text: 'Hello, {{user_name}}...' };
-    case 'de':
-      return { text: 'Hallo, {{user_name}}...' };
-    case 'fr':
-      return { text: 'Bonjour, {{user_name}}...' };
-    // ... 180+ lines repeated for every template
-  }
-};
-```
+<CodeBlock code={beforeCode} />
 
-```javascript
-// Clean, composable, automatically internationalized
-import { Button, Heading, Text } from '@react-email/components';
-import { useTranslation } from 'react-i18next';
-
-export function ConfirmEmail({ userName, link }: Props) {
-  const { t } = useTranslation();
-
-  return (
-    <EmailBase>
-      <Heading>{t('confirm.heading')}</Heading>
-      <Text>{t('confirm.greeting', { userName })}</Text>
-      <Button href={link}>{t('confirm.button')}</Button>
-    </EmailBase>
-  );
-}
-```
+<CodeBlock code={afterCode} />
 
 ## OwlPost: Intelligent Template Resolution
 

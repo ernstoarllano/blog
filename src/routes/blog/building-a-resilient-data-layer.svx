@@ -5,6 +5,7 @@ date: "2025-11-18"
 
 <script>
 	import Mermaid from '$lib/components/mermaid.svelte';
+	import CodeBlock from '$lib/components/code-block.svelte';
 
 	const beforeDiagram = `graph TD
 A[User Visits Dashboard] --> B[Component Mounts]
@@ -67,6 +68,44 @@ style C6 fill:#f59e0b,stroke:#d97706
 style D6 fill:#f59e0b,stroke:#d97706
 style E6 fill:#f59e0b,stroke:#d97706
 style C7 fill:#059669,stroke:#047857,stroke-width:3px`;
+
+	const beforeCode = `// Fetch on every render, no caching, no types
+function Dashboard() {
+  const [devices, setDevices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/devices')
+      .then(res => res.json())
+      .then(data => setDevices(data)); // What shape is data?
+  }, []); // Refetches on every render
+
+  if (loading) return null; // No loading state
+
+  // One failure = entire page unusable
+  return <DeviceList devices={devices} />;
+}`;
+
+	const afterCode = `// OpenAPI-generated client with full type safety
+import { api } from '@/lib/api-client';
+
+function Dashboard() {
+  return (
+    <div className="space-y-4">
+      <SuspenseSection
+        fallback={<DeviceListSkeleton />}
+        errorFallback={<ErrorRetry section="devices" />}
+      >
+        <DeviceSection />
+      </SuspenseSection>
+    </div>
+  );
+}
+
+function DeviceSection() {
+  const { data } = api.devices.list.useSuspenseQuery();
+  return <DeviceList devices={data} />; // Fully typed
+}`;
 </script>
 
 ## The Dragon in the Codebase
@@ -102,49 +141,11 @@ The transformation from fragile to resilient:
 
 ### Before: useEffect Anti-Patterns
 
-```javascript
-// Fetch on every render, no caching, no types
-function Dashboard() {
-  const [devices, setDevices] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/devices')
-      .then(res => res.json())
-      .then(data => setDevices(data)); // What shape is data?
-  }, []); // Refetches on every render
-
-  if (loading) return null; // No loading state
-
-  // One failure = entire page unusable
-  return <DeviceList devices={devices} />;
-}
-```
+<CodeBlock code={beforeCode} />
 
 ### After: Type-Safe, Cached, Resilient
 
-```javascript
-// OpenAPI-generated client with full type safety
-import { api } from '@/lib/api-client';
-
-function Dashboard() {
-  return (
-    <div className="space-y-4">
-      <SuspenseSection
-        fallback={<DeviceListSkeleton />}
-        errorFallback={<ErrorRetry section="devices" />}
-      >
-        <DeviceSection />
-      </SuspenseSection>
-    </div>
-  );
-}
-
-function DeviceSection() {
-  const { data } = api.devices.list.useSuspenseQuery();
-  return <DeviceList devices={data} />; // Fully typed
-}
-```
+<CodeBlock code={afterCode} />
 
 ## Key Architectural Decisions
 
