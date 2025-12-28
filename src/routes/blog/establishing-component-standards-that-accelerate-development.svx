@@ -1,0 +1,90 @@
+---
+title: "Establishing Component Standards That Accelerate Development"
+date: "2025-12-22"
+---
+
+<script>
+	import CodeBlock from '$lib/components/code-block.svelte';
+
+	const beforeCode = `// PropTypes, manual state, custom CSS classes
+import PropTypes from 'prop-types';
+
+function AppBanner({ message, close }) {
+  const [showMessage, setShowMessage] = useState(true);
+  let warning = false;
+  let announcement = false;
+
+  if (message?.type === 'info') announcement = true;
+  if (message?.type === 'warning') warning = true;
+
+  return (
+    <OrganizationMessage>
+      <div className="o-flex-acenter">
+        {announcement && <BoomBox className="u-margin--medium" />}
+        {warning && <AlertCircle className="u-margin--medium" />}
+        {message.body}
+      </div>
+      <MessageCloseButtonX close={close} />
+    </OrganizationMessage>
+  );
+}
+
+AppBanner.propTypes = {
+  close: PropTypes.func,
+};`;
+
+	const afterCode = `// TypeScript, composable primitives, consistent styling
+import {
+  Alert,
+  AlertClose,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+} from 'sunnyside';
+
+export function Alerts() {
+  const alerts = useAlerts();
+
+  return (
+    <>
+      {alerts.map((alert) => (
+        <Alert key={alert.id} variant={alert.type}>
+          <AlertIcon variant={alert.type} />
+          <AlertContent>
+            <AlertDescription>{alert.message}</AlertDescription>
+            <AlertClose onClick={() => handleClose(alert.id)} />
+          </AlertContent>
+        </Alert>
+      ))}
+    </>
+  );
+}`;
+</script>
+
+## The Challenge
+
+The platform lacked component standards. Without consistent patterns, every engineer built components differently—PropTypes instead of TypeScript, custom CSS utility classes only veterans understood, and monolithic components mixing business logic with rendering. The lack of standards meant slow, inconsistent UI development across the team.
+
+## The Solution
+
+I established component standards by creating Sunnyside, a TypeScript-first component library built on Radix UI primitives and Class Variance Authority. The goal: establish standards that accelerate development by providing consistent, reusable patterns the entire team could follow.
+
+## From Inconsistent Patterns to Standardized Components
+
+The transformation was dramatic. Here's what changed:
+
+<CodeBlock code={beforeCode} />
+
+<CodeBlock code={afterCode} />
+
+## Establishing Component Standards
+
+Standardized on Radix UI primitives for accessibility (ARIA attributes, keyboard navigation), Class Variance Authority for type-safe variant management, and Tailwind CSS for consistent design tokens. The standards enabled incremental adoption—engineers could follow established patterns in new features without touching legacy code, with component-by-component migration as features updated.
+
+## Impact
+
+**Development acceleration:** Standardized components accelerated development—engineers compose from accessible primitives following established patterns instead of building from scratch. Type safety catches issues before code review, and WCAG compliance is built into every component. The standards eliminated the need to understand legacy patterns.
+
+**Consistency at scale:** Team shipped 40% more features quarter-over-quarter with consistent design across all touchpoints. Standardized components ensured every feature followed the same patterns, and UI work no longer blocked product launches.
+
+Product asked for a new complex dashboard with an estimated 2-week timeline. Engineering delivered it in 3 days—because the component standards provided all the necessary UI primitives.

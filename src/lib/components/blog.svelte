@@ -3,28 +3,28 @@
         <h2 class="text-md font-semibold">Blog</h2>
         <div>
             <ul>
-                <li class="group flex items-center justify-between">
-                    <a class="group-hover:pl-2 text-sm text-zinc-300 transition-all" href="/blog/building-a-resilient-data-layer">Building a Resilient Data Layer</a>
+                <li class="flex items-center justify-between">
+                    <a class="text-sm text-zinc-300 transition-all" href="/blog/a-proactive-approach-to-platform-stability">A Proactive Approach to Platform Stability</a>
                     <div class="grow mx-2 border-b border-dashed border-zinc-400"></div>
                     <time class="grow-0 text-xs text-zinc-400" datetime="2025-11-26">Nov 26, 25</time>
                 </li>
                 <li class="flex items-center justify-between">
-                    <a class="text-sm text-zinc-300" href="/blog/architecting-a-multi-variant-api-integration-system">Architecting a Multi-Variant API Integration System</a>
+                    <a class="text-sm text-zinc-300" href="/blog/making-api-integrations-repeatable">Making API Integrations Repeatable</a>
                     <div class="grow mx-2 border-b border-dashed border-zinc-400"></div>
                     <time class="grow-0 text-xs text-zinc-400" datetime="2025-11-01">Nov 1, 25</time>
                 </li>
                 <li class="flex items-center justify-between">
-                    <a class="text-sm text-zinc-300" href="/blog/building-a-typescript-first-component-library">Building a TypeScript-First Component Library</a>
+                    <a class="text-sm text-zinc-300" href="/blog/establishing-component-standards-that-accelerate-development">Establishing Component Standards That Accelerate Development</a>
                     <div class="grow mx-2 border-b border-dashed border-zinc-400"></div>
                     <time class="grow-0 text-xs text-zinc-400" datetime="2025-11-01">Nov 1, 25</time>
                 </li>
                 <li class="flex items-center justify-between">
-                    <a class="text-sm text-zinc-300" href="/blog/replacing-manual-form-state-with-type-safe-abstractions">Replacing Manual Form State with Type-Safe Abstractions</a>
+                    <a class="text-sm text-zinc-300" href="/blog/building-form-abstractions-that-multiply-team-velocity">Building Form Abstractions That Multiply Team Velocity</a>
                     <div class="grow mx-2 border-b border-dashed border-zinc-400"></div>
                     <time class="grow-0 text-xs text-zinc-400" datetime="2025-11-01">Nov 1, 25</time>
                 </li>
                 <li class="flex items-center justify-between">
-                    <a class="text-sm text-zinc-300" href="/blog/building-a-scalable-email-system">Building a Scalable Email System</a>
+                    <a class="text-sm text-zinc-300" href="/blog/multi-tenant-email-architecture">Multi-Tenant Email Architecture</a>
                     <div class="grow mx-2 border-b border-dashed border-zinc-400"></div>
                     <time class="grow-0 text-xs text-zinc-400" datetime="2025-11-01">Nov 1, 25</time>
                 </li>

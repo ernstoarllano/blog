@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let { diagram, class: className = 'mermaid' }: { diagram: string; class?: string } = $props();
+	let { diagram }: { diagram: string; } = $props();
 	let container: HTMLPreElement;
 
 	onMount(async () => {
@@ -27,4 +27,4 @@
 	});
 </script>
 
-<pre bind:this={container} class={className}>{diagram}</pre>
+<pre bind:this={container} class='bg-zinc-900 border border-zinc-800 rounded-lg [&>svg]:mx-auto'>{diagram}</pre>

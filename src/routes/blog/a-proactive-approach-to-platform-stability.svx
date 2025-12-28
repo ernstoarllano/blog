@@ -1,0 +1,99 @@
+---
+title: "A Proactive Approach to Platform Stability"
+date: "2025-11-18"
+---
+
+<script>
+	import Mermaid from '$lib/components/mermaid.svelte';
+	import CodeBlock from '$lib/components/code-block.svelte';
+
+	const beforeDiagram = `graph TD
+A[User Visits Dashboard] --> B[Component Mounts]
+B --> C[Fetch All Data at Once]
+C --> D{All API Calls Succeed?}
+D -->|Yes| E[✓ Page Renders]
+D -->|No| F[Page Unusable]
+F --> G[P1 Incident]`;
+
+	const afterDiagram = `graph TD
+A[User Visits Dashboard] --> B[Page Loads]
+B --> C[Each Section Loads Independently]
+
+C --> C1{Cached?}
+C1 -->|Yes| C2[✓ Instant Render]
+C1 -->|No| C3[Show Skeleton Loader]
+C3 --> C4{API Call}
+C4 -->|Success| C5[✓ Render Section]
+C4 -->|Fail| C6[Show Error + Retry]
+C6 --> C7[Rest of Page Still Works]`;
+
+	const beforeCode = `// Fetch on every render, no caching, no types
+function Dashboard() {
+  const [devices, setDevices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/devices')
+      .then(res => res.json())
+      .then(data => setDevices(data)); // What shape is data?
+  }, []); // Refetches on every render
+
+  if (loading) return null; // No loading state
+
+  // One failure = entire page unusable
+  return <DeviceList devices={devices} />;
+}`;
+
+	const afterCode = `// OpenAPI-generated client with full type safety
+import { api } from '@/lib/api-client';
+
+function Dashboard() {
+  return (
+    <div className="space-y-4">
+      <SuspenseSection
+        fallback={<DeviceListSkeleton />}
+        errorFallback={<ErrorRetry section="devices" />}
+      >
+        <DeviceSection />
+      </SuspenseSection>
+    </div>
+  );
+}
+
+function DeviceSection() {
+  const { data } = api.devices.list.useSuspenseQuery();
+  return <DeviceList devices={data} />; // Fully typed
+}`;
+</script>
+
+## The Challenge
+
+During a front-end audit, I identified critical anti-patterns contributing to production instability. The data layer was a significant problem—when combined with backend issues, a failed API call made the platform unusable for an enterprise client, triggering a P1 incident.
+
+I documented every issue in a comprehensive Jira epic and advocated for prioritization. The audit revealed widespread problems: useEffect fetches on every render, zero caching, no API contracts and no loading states.
+
+## The Solution
+
+I architected a standardized data layer built on three foundations: an OpenAPI-generated client for type safety, React Query for declarative caching, and composable Suspense boundaries for resilient error recovery. The goal: make the platform resilient by default where failed requests can't cascade into P1 incidents.
+
+## Architecture Comparison
+
+The transformation from fragile to resilient:
+
+<Mermaid diagram={beforeDiagram} />
+
+<Mermaid diagram={afterDiagram} />
+
+## The Transformation
+
+<CodeBlock code={beforeCode} />
+
+<CodeBlock code={afterCode} />
+
+## Impact
+
+**Team velocity:** Engineers ship complex features without data-layer fear. TypeScript catches API mismatches at compile time, and Suspense boundaries ensure one failed request doesn't break entire pages. React Query eliminated 70% of redundant API requests, making the platform feel significantly faster.
+
+**Business outcomes:** Zero P1 incidents from failed API calls since implementation. Platform reliability improved dramatically, support tickets reduced as users recovered from errors themselves.
+
+Engineers now build multi-section dashboards without fear, knowing one failed request won't bring down the entire page.

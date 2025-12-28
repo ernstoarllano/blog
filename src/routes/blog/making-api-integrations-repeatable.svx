@@ -1,5 +1,5 @@
 ---
-title: "Architecting a Multi-Variant API Integration System"
+title: "Making API Integrations Repeatable"
 date: "2025-12-22"
 ---
 
@@ -133,76 +133,36 @@ router.post(
 
 ## The Challenge
 
-Dispel needed to integrate with a third-party platform that had multiple API versions. The initial approach—building separate implementations for each variant—was creating unsustainable technical debt:
-
-- Duplicate authentication logic across Guardian and Vantage APIs
-- Separate job implementations for each API variant
-- Copy-pasted error handling scattered across files
-- Inconsistent database patterns—each integration did things differently
-- Adding new API variants required 2-3 days of careful duplication
-- Bug fixes had to be applied to multiple codebases
-
-The team needed a system where adding new API variants was predictable, fast, and didn't require deep knowledge of our existing integrations.
+The platform needed to integrate with a third-party system that had multiple API versions. Without repeatable patterns, each integration was built from scratch—duplicate authentication logic, copy-pasted error handling, and inconsistent implementations. Adding new API variants required 2-3 days of custom work, and bug fixes had to be applied to multiple codebases.
 
 ## The Solution
 
-I architected a unified integration system using base classes, factory patterns, and shared abstractions. The goal wasn't just reducing duplication—it was establishing a framework where any engineer could add new API variants confidently, following clear patterns rather than reverse-engineering existing code.
+I established a repeatable integration framework using base classes, factory patterns, and shared abstractions. The goal: make API integrations repeatable so any engineer could add new variants by following standardized patterns instead of rebuilding from scratch.
 
-## From Duplicate Implementations to Shared Abstractions
+## From Custom Implementations to Repeatable Patterns
 
 The transformation was dramatic. Here's what changed:
 
-### Before: Copy-Paste for Every Variant
-
 <CodeBlock code={beforeCode} />
-
-### After: Base Class + Specific Implementations
 
 <CodeBlock code={afterCode} />
 
-## Factory Pattern for Job Creation
+## Repeatable Job Creation
 
-Rather than duplicating job logic, I established factory functions that generate jobs with consistent error handling and monitoring:
+I established factory functions that generate jobs with consistent error handling and monitoring, making job creation repeatable across all API variants:
 
 <CodeBlock code={factoryCode} />
 
-## Establishing Integration Patterns
+## Standardized Route Architecture
 
-### 60% Code Reduction
-
-By extracting shared logic into base classes and factory functions, I reduced the integration codebase from ~1,500 lines per API to ~300 lines per API—with most of those 300 lines being API-specific business logic, not boilerplate.
-
-### Team Impact
-
-- **Democratized API integrations:** Any engineer can add new variants following established patterns
-- **4-hour integration timeline:** New API variants ship in 4 hours instead of 2-3 days
-- **Consistent error handling:** All integrations use the same monitoring and logging patterns
-- **Single source of truth:** Bug fixes in BaseApi propagate to all integrations automatically
-
-### Business Outcomes
-
-- **Faster partnership velocity:** New integrations no longer block business development
-- **Reduced maintenance burden:** Shared code means fewer places for bugs to hide
-- **Better observability:** Consistent monitoring across all integrations
-- **Enabled rapid scaling:** Added 3 new API variants in Q4 without expanding team size
-
-## Unified Route Architecture
-
-I established a single endpoint structure that handles all API variants through parameters, eliminating route duplication:
+I established a single endpoint structure that handles all API variants through parameters, standardizing the integration pattern:
 
 <CodeBlock code={routeCode} />
 
-## Technical Architecture
-
-- **Abstract base class** for shared connection and proxy logic
-- **Factory functions** for consistent job creation across APIs
-- **TypeScript inheritance** with abstract methods for type safety
-- **Unified error handling** with Sentry integration
-- **Parameterized routes** that handle multiple API types
-- **Shared utility functions** for mapping and validation
-
 ## Impact
 
-This architectural transformation changed how we approach third-party integrations at Dispel. By establishing clear patterns and shared abstractions, I enabled the team to add new integrations confidently and quickly, without requiring deep expertise in our existing codebase.
+**Repeatable integrations:** New API variants ship in 4 hours instead of 2-3 days of custom work. Engineers follow repeatable patterns without needing deep integration expertise. Bug fixes in BaseApi propagate to all integrations automatically, and standardized error handling ensures uniform monitoring across all variants.
 
-The best validation? An engineer who had been with us for 3 weeks added a new API variant in 4 hours—following the patterns I established without needing my direct involvement. That's the multiplier effect technical leadership should create: systems that scale beyond you.
+**Scalable framework:** Reduced codebase from ~1,500 lines per API to ~300 lines per API. Added 3 new API variants in Q4 without expanding team size. The repeatable framework reduced maintenance burden and improved observability.
+
+An engineer who had been with the team for 3 weeks added a new API variant in 4 hours—following the repeatable patterns without needing direct guidance.

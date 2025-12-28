@@ -1,0 +1,84 @@
+---
+title: "Multi-Tenant Email Architecture"
+date: "2025-12-22"
+---
+
+<script>
+	import Mermaid from '$lib/components/mermaid.svelte';
+	import CodeBlock from '$lib/components/code-block.svelte';
+
+	const emailFlowDiagram = `graph TD
+A[Function Called] --> B[Define Email Template]
+B --> C[Define Client Branding]
+C --> D[Define User Language]
+D --> E{Branding Supported?}
+E -->|Yes| F[Load Branded Template]
+E -->|No| G[Fallback to Default Template]
+F --> H{Language Supported?}
+G --> H
+H -->|Yes| I[Use Requested Language]
+H -->|No| J[Fallback to English]
+I --> K[Send Email]
+J --> K`;
+
+	const beforeCode = `// Manual text with switch statements per locale
+const template = ({ locale }) => {
+  switch (locale) {
+    case 'en-us':
+      return { text: 'Hello, {{user_name}}...' };
+    case 'de':
+      return { text: 'Hallo, {{user_name}}...' };
+    case 'fr':
+      return { text: 'Bonjour, {{user_name}}...' };
+    // ... 180+ lines repeated for every template
+  }
+};`;
+
+	const afterCode = `// Clean, composable, automatically internationalized
+import { Button, Heading, Text } from '@react-email/components';
+import { useTranslation } from 'react-i18next';
+
+export function ConfirmEmail({ userName, link }: Props) {
+  const { t } = useTranslation();
+
+  return (
+    <EmailBase>
+      <Heading>{t('confirm.heading')}</Heading>
+      <Text>{t('confirm.greeting', { userName })}</Text>
+      <Button href={link}>{t('confirm.button')}</Button>
+    </EmailBase>
+  );
+}`;
+</script>
+
+## The Challenge
+
+The platform needed to support multiple enterprise clients, each with unique branding and language requirements. The existing email system couldn't handle multi-tenancy—all emails used the same template, manual switch statements handled translations, and zero type safety meant missing template variables surfaced in production. Every new client required custom email implementations.
+
+## The Solution
+
+I architected a multi-tenant email system using React Email, TypeScript, and i18next with intelligent branding and language fallbacks. The goal: enable any client to use custom branded emails in their preferred languages without custom code.
+
+## From Manual Text to Component-Based Architecture
+
+The transformation was dramatic. Here's what changed:
+
+<CodeBlock code={beforeCode} />
+
+<CodeBlock code={afterCode} />
+
+## Intelligent Template Resolution
+
+I designed the system to handle branding and internationalization automatically through fallbacks. Here's how a reset password email flows:
+
+<Mermaid diagram={emailFlowDiagram} />
+
+The system checks branding and language with sensible defaults, ensuring emails always send successfully while respecting client preferences when available.
+
+## Impact
+
+**Multi-tenant support:** The architecture supports unlimited clients with custom branding and multiple languages. Adding new clients requires zero email code changes—just configuration. TypeScript ensures proper template parameters are passed at compile time across all tenant variations.
+
+**Business outcomes:** Branded email support launched for a major enterprise client and rolling out to two other enterprise clients. Engineers ship new client branded emails in 2-3 hours instead of requiring custom implementations.
+
+The multi-tenant architecture enabled rapid client onboarding—something that previously required custom email implementations for each enterprise client.

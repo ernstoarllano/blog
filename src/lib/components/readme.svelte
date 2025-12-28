@@ -1,8 +1,7 @@
 <section class="max-w-[500px] mx-auto pt-44 pb-16 space-y-8">
     <h1 class="text-2xl font-bold">My README</h1>
     <p>
-        Hey there! I'm Ernesto 👋 If you're here, we're probably going to work
-        together. This is your guide to how I operate—what drives me, how I
+        Hey there! I'm Ernesto 👋 If you're here, we might work together. This is your guide to how I operate—what drives me, how I
         think, and what you can expect.
     </p>
     <section class="space-y-8">
@@ -113,25 +112,32 @@
         <h2>A few things about me:</h2>
         <ul class="pl-4 list-disc">
             <li>
-                13 years building web platforms—from early WordPress sites to
-                enterprise SaaS
+                13 years building web platforms—from my first project (a website for my local movie theater in Imperial, CA) to enterprise SaaS
             </li>
             <li>
                 Front-end specialist with full-stack capabilities (React,
                 TypeScript, Next.js, Node.js)
             </li>
             <li>
-                Passionate about design systems, component architecture, and
-                AI-assisted workflows
-            </li>
-            <li>I believe small, compounding improvements beat big rewrites</li>
-            <li>
-                I track my accomplishments throughout the year (happy to share my
-                template!)
+                Based in Flagstaff, AZ—a beautiful mountain town I love calling home
             </li>
             <li>
-                When I'm not coding, I'm running, cycling on my Trek Domane or
-                simply being a dad / husband
+                Remote work advocate—it lets me be more present with my family while staying productive
+            </li>
+            <li>
+                When I'm in flow state, I code to music or podcasts (Joe Rogan, Nick Bare, Syntax)
+            </li>
+            <li>
+                Outside of code: I'm passionate about cooking (culinary school is on my bucket list!), photography, and drawing
+            </li>
+            <li>
+                Big on psychology and wellness—Rick Rubin's <em>The Creative Act: A Way of Being</em> is a favorite
+            </li>
+            <li>
+                Cold brews and iced matchas keep me going
+            </li>
+            <li>
+                When I'm not coding, you'll find me running, cycling on my Trek Domane, or spending time with my family
             </li>
         </ul>
     </section>

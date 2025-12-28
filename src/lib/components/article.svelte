@@ -18,7 +18,7 @@
 	);
 </script>
 
-<div class="max-w-[500px] mx-auto pt-44 pb-16">
+<div class="max-w-[700px] mx-auto pt-44 pb-16">
 	<article class="space-y-8">
 		<header>
             <h1>
