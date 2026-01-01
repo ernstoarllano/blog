@@ -17,8 +17,9 @@ h3 {
 }
 
 p,
-li {
-    @apply text-sm sm:text-base text-zinc-300;
+li,
+article time {
+    @apply text-sm text-zinc-300;
 }
 
 ul {

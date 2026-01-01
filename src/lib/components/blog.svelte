@@ -15,7 +15,7 @@
                     <time class="grow-0 text-xs text-zinc-400" datetime="2023-11-01">Mar 1, 23</time>
                 </li>
                 <li class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                    <a class="text-sm text-zinc-300" href="/blog/establishing-component-standards-that-accelerate-development">Establishing Component Standards That Accelerate Development</a>
+                    <a class="text-sm text-zinc-300" href="/blog/establishing-component-standards-that-accelerate-development">Establishing Component Standards</a>
                     <div class="grow mx-2 border-b border-dashed border-zinc-400 hidden sm:block"></div>
                     <time class="grow-0 text-xs text-zinc-400" datetime="2023-11-01">Jan 1, 23</time>
                 </li>

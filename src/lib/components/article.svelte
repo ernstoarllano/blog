@@ -24,6 +24,7 @@
 <div class="max-w-[700px] mx-auto px-4 md:px-0 pt-24 md:pt-44 pb-16">
 	<article class="space-y-8">
 		<header>
+            <a href="/" class="text-sm text-zinc-300 mb-4 inline-flex">← Back to home</a>
             <h1>
                 {title}
             </h1>
