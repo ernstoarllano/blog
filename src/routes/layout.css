@@ -5,11 +5,11 @@ body {
 }
 
 h1 {
-    @apply text-2xl font-bold;
+    @apply text-xl sm:text-2xl font-bold;
 }
 
 h2 {
-    @apply font-semibold;
+    @apply text-lg sm:text-xl font-semibold;
 }
 
 h3 {
@@ -18,7 +18,7 @@ h3 {
 
 p,
 li {
-    @apply text-sm text-zinc-300;
+    @apply text-sm sm:text-base text-zinc-300;
 }
 
 ul {

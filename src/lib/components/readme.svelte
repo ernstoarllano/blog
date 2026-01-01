@@ -1,4 +1,4 @@
-<section class="max-w-[500px] mx-auto pt-44 pb-16 space-y-8">
+<section class="max-w-[500px] mx-auto px-4 md:px-0 pt-24 md:pt-44 pb-16 space-y-8">
     <h1 class="text-2xl font-bold">My README</h1>
     <p>
         Hey there! I'm Ernesto 👋 If you're here, we might work together. This is your guide to how I operate—what drives me, how I

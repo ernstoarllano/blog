@@ -1,4 +1,4 @@
-<section class="max-w-[500px] mx-auto pb-16 space-y-8">
+<section class="max-w-[500px] mx-auto px-4 md:px-0 pb-16 space-y-8">
     <div class="space-y-8">
         <h2>Work</h2>
     </div>
