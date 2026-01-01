@@ -14,13 +14,13 @@ Personal blog built with SvelteKit and MDsveX.
 Install dependencies:
 
 ```sh
-npm install
+bun install
 ```
 
 Start the development server:
 
 ```sh
-npm run dev
+bun run dev
 ```
 
 ## Building
@@ -28,13 +28,13 @@ npm run dev
 Create a production build:
 
 ```sh
-npm run build
+bun run build
 ```
 
 Preview the production build:
 
 ```sh
-npm run preview
+bun run preview
 ```
 
 ## Project Structure
