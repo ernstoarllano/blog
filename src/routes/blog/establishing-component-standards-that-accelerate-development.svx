@@ -1,6 +1,6 @@
 ---
 title: "Establishing Component Standards That Accelerate Development"
-date: "2025-12-22"
+date: "2023-01-01"
 ---
 
 <script>
@@ -67,7 +67,7 @@ The platform lacked component standards. Without consistent patterns, every engi
 
 ## The Solution
 
-I established component standards by creating Sunnyside, a TypeScript-first component library built on Radix UI primitives and Class Variance Authority. The goal: establish standards that accelerate development by providing consistent, reusable patterns the entire team could follow.
+I established component standards by architecting Sunnyside, a TypeScript-first component library built on Radix UI primitives and Class Variance Authority. The goal: establish standards that accelerate development by providing consistent, reusable patterns the entire team could follow.
 
 ## From Inconsistent Patterns to Standardized Components
 
@@ -86,5 +86,3 @@ Standardized on Radix UI primitives for accessibility (ARIA attributes, keyboard
 **Development acceleration:** Standardized components accelerated development—engineers compose from accessible primitives following established patterns instead of building from scratch. Type safety catches issues before code review, and WCAG compliance is built into every component. The standards eliminated the need to understand legacy patterns.
 
 **Consistency at scale:** Team shipped 40% more features quarter-over-quarter with consistent design across all touchpoints. Standardized components ensured every feature followed the same patterns, and UI work no longer blocked product launches.
-
-Product asked for a new complex dashboard with an estimated 2-week timeline. Engineering delivered it in 3 days—because the component standards provided all the necessary UI primitives.

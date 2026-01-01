@@ -10,11 +10,14 @@
 	let { title, datetime, children }: Article = $props();
 
 	const formattedDate = $derived(
-		new Date(datetime).toLocaleDateString('en-US', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		})
+		(() => {
+			const [year, month, day] = datetime.split('-').map(Number);
+			return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric'
+			});
+		})()
 	);
 </script>
 
