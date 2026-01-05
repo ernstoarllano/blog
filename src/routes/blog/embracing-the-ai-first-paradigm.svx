@@ -11,7 +11,7 @@ It wasn't until the end of 2025 that the company began acknowledging AI engineer
 
 The disconnect was noticeable. I watched talented engineers spend days on tasks that AI-assisted workflows could complete in hours. They rebuilt abstractions that existed in every codebase, manually wrote tests that AI could scaffold perfectly, debated code review comments about formatting that AI could auto-fix.
 
-Meanwhile, I embraced AI from day one. I used Claude, ChatGPT, and Cursor to multiply my velocity. What took my peers three days took me hours. The difference wasn't skill—it was tooling and willingness to experiment.
+Meanwhile, I embraced AI from day one. I used Claude, ChatGPT, and Cursor to multiply my velocity. What took my peers days took me hours. The difference wasn't skill—it was tooling and willingness to experiment.
 
 ## The Shift: From Code Writers to Prompt Engineers
 
