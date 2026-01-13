@@ -17,7 +17,7 @@
                 <div class="flex flex-col gap-2">
                     <div class="flex justify-between">
                         <p>Senior Full Stack Web Developer at Indio</p>
-                        <time class="text-xs text-zinc-400">Jan 20 - Sep 22</time>
+                        <time class="text-xs text-zinc-400">Jul 15 - Sep 22</time>
                     </div>                    
                     <span class="text-xs text-zinc-400">Indio delivers a cloud-based reservation and property-management platform for RV parks and campgrounds, enabling unified booking, billing, and operations and increasing occupancy, revenue consistency, and overall park efficiency.</span>
                 </div>                
